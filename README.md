@@ -1,11 +1,11 @@
 # TvMazeScraper
 Solution consists of for projects:
-- TvMazeScraper.Collector - a windows service that grabs data from TVmaze in background and keeps it in the local storage (Ms SQL database). 
+- TvMazeScraper.Collector - a windows service that grabs data from TVmaze in background and keeps it in the local storage (MS SQL database). 
 - MTvMazeScraper.WebApi - a web service that returns paged TV shows from the local storage (http://localhost:57035/api/shows?page=3).
-- TvMazeScraper.Core - a library that incupsulate basic application logic
+- TvMazeScraper.Core - a library that encapsulate basic application logic
 - TvMazeScraper.DataAccess - implementation of access to the local storage and to the TVmaze API.
 
-#Tecknologies
+#Technologies
 - Asp.Net Core for WebAppi
 - Topshelf for windows service
 - Entity Framework to access to MS SQL
