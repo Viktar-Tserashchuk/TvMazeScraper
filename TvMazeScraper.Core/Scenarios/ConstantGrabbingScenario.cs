@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TvMazeScraper.Core.DataAccess;
@@ -8,7 +9,7 @@ namespace TvMazeScraper.Core.Scenarios
     public class ConstantGrabbingScenario : IConstantGrabbingScenario
     {
         private const int TvMazePageSize = 250;
-        private const int PauseWhenNoShowsAnymoreInMs = 1000 * 60 * 60; // 1 hour
+        private const int PauseWhenNoShowsLeftInMs = 1000 * 60 * 60; // 1 hour
 
         private readonly IUnitOfWorkFactory unitOfWorkFactory;
         private readonly IGrabPageOfShowsScenario grabPageOfShowsScenario;
@@ -21,10 +22,13 @@ namespace TvMazeScraper.Core.Scenarios
         }
         public async Task RunAsync(CancellationToken cancellationToken)
         {
-            var maxShowId = await unitOfWorkFactory
+            var showRepository = unitOfWorkFactory
                 .CreateUnitOfWork()
-                .ShowRepository
-                .GetMaxShowIdAsync();
+                .ShowRepository;
+            var maxShowId = await showRepository.AnyAsync()
+                ? await showRepository.GetMaxShowIdAsync()
+                : 0;
+
             var pageToAsk = (int)maxShowId / TvMazePageSize;
 
             while (!cancellationToken.IsCancellationRequested)
@@ -34,7 +38,7 @@ namespace TvMazeScraper.Core.Scenarios
                 if (!moreShowsExist)
                 {
                     OnFinished?.Invoke(this, pageToAsk);
-                    await Task.Delay(PauseWhenNoShowsAnymoreInMs, cancellationToken);
+                    await Task.Delay(PauseWhenNoShowsLeftInMs, cancellationToken);
                 }
             }
         }

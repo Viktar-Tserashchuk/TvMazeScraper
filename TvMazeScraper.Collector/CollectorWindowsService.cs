@@ -38,12 +38,20 @@ namespace TvMazeScraper.Collector
 
         public async Task GrabShows(CancellationToken cancellationToken)
         {
-            using (var container = BuildContainer())
+            try
             {
-                var constantgrabbingScenario = container.Resolve<IConstantGrabbingScenario>();
-                constantgrabbingScenario.OnNextPageGrabbing += (sender, page) => logger.Info("Grabing page: {0}", page);
-                constantgrabbingScenario.OnFinished += (sender, page) => logger.Info("No more shows. Waiting for an update");
+                using (var container = BuildContainer())
+                {
+                    var constantgrabbingScenario = container.Resolve<IConstantGrabbingScenario>();
+                    constantgrabbingScenario.OnNextPageGrabbing += (sender, page) => logger.Info("Grabing page: {0}", page);
+                    constantgrabbingScenario.OnFinished += (sender, page) => logger.Info("No more shows. Waiting for an update");
                 await constantgrabbingScenario.RunAsync(cancellationToken);
+                }
+            }
+            catch (Exception e)
+            {
+                logger.Error(e);
+                throw;
             }
         }
 

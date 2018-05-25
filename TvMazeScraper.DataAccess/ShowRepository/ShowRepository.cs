@@ -58,5 +58,10 @@ namespace TvMazeScraper.DataAccess.ShowRepository
                 .Shows
                 .MaxAsync(show => show.Id);
         }
+
+        public async Task<bool> AnyAsync()
+        {
+            return await dbContext.Shows.AnyAsync();
+        }
     }
 }

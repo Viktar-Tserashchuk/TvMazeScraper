@@ -10,5 +10,6 @@ namespace TvMazeScraper.Core.DataAccess
         Task<Show> GetAsync(long id);
         Task<IEnumerable<Show>> GetAsync(int skip, int take);
         Task<long> GetMaxShowIdAsync();
+        Task<bool> AnyAsync();
     }
 }
