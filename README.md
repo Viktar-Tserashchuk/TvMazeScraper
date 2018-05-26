@@ -12,3 +12,5 @@ The solution consists of for projects:
 - NLog for logging
 - Autofac as a DI container in the windows service
 - AutoMapper
+- XUnit
+- Moq
