@@ -67,7 +67,7 @@ namespace TvMazeScraper.DataAccess.RemoteShowRepository
                 role => new Actor(
                     role.Person.Id,
                     role.Person.Name,
-                    role.Person.Birthday != null ? DateTime.Parse(role.Person.Birthday) : (DateTime?) null,
+                    role.Person.Birthday,
                     null)
                 )
                 .GroupBy(actor => actor.Id)

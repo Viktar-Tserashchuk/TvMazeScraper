@@ -24,7 +24,7 @@ namespace TvMazeScraper.DataAccess.Migrations
                 {
                     b.Property<long>("Id");
 
-                    b.Property<DateTime?>("Birthday");
+                    b.Property<string>("Birthday");
 
                     b.Property<string>("Name");
 

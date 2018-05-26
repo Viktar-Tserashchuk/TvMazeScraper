@@ -113,6 +113,10 @@
     <Compile Include="Migrations\20180525190553_InitialCreate.designer.cs">
       <DependentUpon>20180525190553_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20180526155946_BirthdayAsString.cs" />
+    <Compile Include="Migrations\20180526155946_BirthdayAsString.designer.cs">
+      <DependentUpon>20180526155946_BirthdayAsString.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\TvShowsContextModelSnapshot.cs" />
     <Compile Include="ShowRepository\ShowRepository.cs" />
     <Compile Include="ShowRepository\UnitOfWorkFactory.cs" />

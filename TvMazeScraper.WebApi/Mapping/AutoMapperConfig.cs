@@ -12,12 +12,6 @@ namespace TvMazeScraper.WebApi.Mapping
                 config
                     .CreateMap<Show, Model.ShowDto>()
                     .ForMember(dest => dest.Cast, opt => opt.MapFrom(src => src.GetActorsOrderedByBirthday()));
-                config
-                    .CreateMap<Actor, Model.ActorDto>()
-                    .ForMember(
-                        dest => dest.Birthday, 
-                        opt => opt.MapFrom(src => src.Birthday == null ? null : src.Birthday.Value.ToString("yyyy-MM-dd"))
-                    );
             });
         }
     }
