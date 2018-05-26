@@ -15,7 +15,7 @@ namespace TvMazeScraper.Core.Model
         {
             return ShowToActors
                 .Select(sta => sta.Actor)
-                .OrderByDescending(actor => actor.Birthday);
+                .OrderBy(actor => actor.Birthday);
         }
 
         private Show() { }
