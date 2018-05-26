@@ -6,7 +6,6 @@ using Autofac;
 using NLog;
 using Topshelf;
 using TvMazeScraper.Core.DataAccess;
-using TvMazeScraper.Core.Model;
 using TvMazeScraper.Core.Scenarios;
 using TvMazeScraper.DataAccess.RemoteShowRepository;
 using TvMazeScraper.DataAccess.ShowRepository;
@@ -15,6 +14,9 @@ namespace TvMazeScraper.Collector
 {
     public class CollectorWindowsService : ServiceControl
     {
+        private const string ShowInformationUrlPattern = "http://api.tvmaze.com/shows/{0}?embed=cast";
+        private const string ShowIndexUrlPattern = "http://api.tvmaze.com/shows?page={0}";
+
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private Task grabTask;
         private CancellationTokenSource cancellationTokenSource;
@@ -64,8 +66,8 @@ namespace TvMazeScraper.Collector
             builder.Register(c => new UnitOfWorkFactory(connectionString)).As<IUnitOfWorkFactory>();
             builder
                 .Register(c => new RemoteShowRepository(
-                    "http://api.tvmaze.com/shows/{0}?embed=cast",
-                    "http://api.tvmaze.com/shows?page={0}")
+                    ShowInformationUrlPattern,
+                    ShowIndexUrlPattern)
                 )
                 .As<IRemoteShowRepository>();
             builder.RegisterType<GrabShowScenario>().As<IGrabShowScenario>();

@@ -11,6 +11,7 @@ namespace TvMazeScraper.WebApi.Controllers
     public class ShowsController : Controller
     {
         private const int PageSize = 10;
+        private const int MinPageNumber = 0;
         private readonly IUnitOfWork unitOfWork;
 
         public ShowsController(IUnitOfWork unitOfWork)
@@ -21,9 +22,9 @@ namespace TvMazeScraper.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int page)
         {
-            if (page < 0)
+            if (page < MinPageNumber)
             {
-                page = 0;
+                page = MinPageNumber;
             }
             
             var res = await unitOfWork
