@@ -6,6 +6,7 @@ using Autofac;
 using NLog;
 using Topshelf;
 using TvMazeScraper.Core.DataAccess;
+using TvMazeScraper.Core.Model;
 using TvMazeScraper.Core.Scenarios;
 using TvMazeScraper.DataAccess.RemoteShowRepository;
 using TvMazeScraper.DataAccess.ShowRepository;
@@ -42,10 +43,10 @@ namespace TvMazeScraper.Collector
             {
                 using (var container = BuildContainer())
                 {
-                    var constantgrabbingScenario = container.Resolve<IConstantGrabbingScenario>();
-                    constantgrabbingScenario.OnNextPageGrabbing += (sender, page) => logger.Info("Grabing page: {0}", page);
-                    constantgrabbingScenario.OnFinished += (sender, page) => logger.Info("No more shows. Waiting for an update");
-                await constantgrabbingScenario.RunAsync(cancellationToken);
+                    var constantGrabbingScenario = container.Resolve<IConstantGrabbingScenario>();
+                    constantGrabbingScenario.OnNextPageGrabbing += (sender, page) => logger.Info("Grabing page: {0}", page);
+                    constantGrabbingScenario.OnFinished += (sender, page) => logger.Info("No more shows. Waiting for an update");
+                    await constantGrabbingScenario.RunAsync(cancellationToken);
                 }
             }
             catch (Exception e)
@@ -58,7 +59,6 @@ namespace TvMazeScraper.Collector
         private static IContainer BuildContainer()
         {
             var connectionString = ConfigurationManager.ConnectionStrings["TvShowsContext"].ConnectionString;
-            Environment.SetEnvironmentVariable("TvShowsConnectionString", connectionString);
 
             var builder = new ContainerBuilder();
             builder.Register(c => new UnitOfWorkFactory(connectionString)).As<IUnitOfWorkFactory>();

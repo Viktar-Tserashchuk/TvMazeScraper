@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 using TvMazeScraper.Core.Model;
 
 namespace TvMazeScraper.DataAccess
@@ -8,36 +7,26 @@ namespace TvMazeScraper.DataAccess
     {
         public DbSet<Show> Shows { get; set; }
         public DbSet<Actor> Actors { get; set; }
+        public DbSet<ShowToActor> ShowToActors { get; set; }
 
-        public TvShowsContext(string connectionString) : base (connectionString)
-        {
-            Configuration.LazyLoadingEnabled = false;
-            Database.SetInitializer(new DbInitializer());
-        }
+        public TvShowsContext(DbContextOptions options) : base(options) { }
 
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder
                 .Entity<Show>()
                 .Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .ValueGeneratedNever();
 
             modelBuilder
                 .Entity<Actor>()
                 .Property(t => t.Id)
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                .ValueGeneratedNever();
 
             modelBuilder
-                .Entity<Show>()
-                .HasMany(show => show.Actors)
-                .WithMany(actor => actor.Shows)
-                .Map(cs =>
-                {
-                    cs.MapLeftKey("ShowId");
-                    cs.MapRightKey("ActorId");
-                    cs.ToTable("ShowActor");
-                });
+                .Entity<ShowToActor>()
+                .HasKey(t => new {t.ShowId, t.ActorId});
         }
     }
 }

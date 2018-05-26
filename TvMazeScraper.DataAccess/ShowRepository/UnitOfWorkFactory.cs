@@ -1,4 +1,5 @@
-﻿using TvMazeScraper.Core.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
+using TvMazeScraper.Core.DataAccess;
 
 namespace TvMazeScraper.DataAccess.ShowRepository
 {
@@ -13,7 +14,10 @@ namespace TvMazeScraper.DataAccess.ShowRepository
 
         public IUnitOfWork CreateUnitOfWork()
         {
-            return new UnitOfWork.UnitOfWork(new TvShowsContext(connectionString));
+            var options = new DbContextOptionsBuilder()
+                .UseSqlServer(connectionString)
+                .Options;
+            return new UnitOfWork.UnitOfWork(new TvShowsContext(options));
         }
     }
 }

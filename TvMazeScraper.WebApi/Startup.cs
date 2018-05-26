@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using TvMazeScraper.Core.DataAccess;
 using TvMazeScraper.DataAccess;
 using TvMazeScraper.DataAccess.UnitOfWork;
@@ -16,7 +17,6 @@ namespace TvMazeScraper.WebApi
         {
             Configuration = configuration;
             AutoMapperConfig.Initialize();
-            Environment.SetEnvironmentVariable("TvShowsConnectionString", Configuration.GetConnectionString("DefaultConnection"));
         }
 
         public IConfiguration Configuration { get; }
@@ -24,7 +24,7 @@ namespace TvMazeScraper.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(serviceProvider => new TvShowsContext(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TvShowsContext>(builder => builder.UseSqlServer(Configuration.GetConnectionString("TvShowsContext")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddMvc();
         }

@@ -63,7 +63,7 @@ namespace TvMazeScraper.DataAccess.RemoteShowRepository
 
         private Show ExtractShowFromRemoteShow(RemoteShow remoteShow)
         {
-            var actors = remoteShow._embedded?.Cast?.Select(
+            var showToActors = remoteShow._embedded?.Cast?.Select(
                 role => new Actor(
                     role.Person.Id,
                     role.Person.Name,
@@ -72,8 +72,9 @@ namespace TvMazeScraper.DataAccess.RemoteShowRepository
                 )
                 .GroupBy(actor => actor.Id)
                 .Select(g => g.First())
+                .Select(actor => new ShowToActor(null, actor))
                 .ToList();
-            return new Show(remoteShow.Id, remoteShow.Name, actors);
+            return new Show(remoteShow.Id, remoteShow.Name, showToActors);
         }
     }
 }
