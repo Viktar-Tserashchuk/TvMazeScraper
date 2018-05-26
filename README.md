@@ -8,6 +8,7 @@ The solution consists of for projects:
 # Technologies
 - Asp.Net Core for WebAppi
 - Topshelf for windows service
-- Entity Framework to access to MS SQL
+- Entity Framework Core to access to MS SQL
 - NLog for logging
 - Autofac as a DI container in the windows service
+- AutoMapper
