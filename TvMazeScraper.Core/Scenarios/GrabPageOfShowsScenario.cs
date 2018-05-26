@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TvMazeScraper.Core.DataAccess;
+using TvMazeScraper.Core.Model;
 
 namespace TvMazeScraper.Core.Scenarios
 {
@@ -23,15 +24,14 @@ namespace TvMazeScraper.Core.Scenarios
         public async Task<bool> RunAsync(int page, CancellationToken cancellationToken)
         {
             var shows = (await remoteRepository.GetPaginatedShowsAsync(page)).ToList();
-            foreach (var show in shows)
+            var showQueue = new Queue<Show>(shows);
+            while(showQueue.Any() && !cancellationToken.IsCancellationRequested)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    return true;
-                }
+                var show = showQueue.Peek();
                 try
                 {
                     await grabShowScenario.RunAsync(show.Id);
+                    showQueue.Dequeue();
                 }
                 catch (TooManyRequestsException)
                 {
