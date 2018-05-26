@@ -36,10 +36,11 @@ namespace TvMazeScraper.DataAccess.RemoteShowRepository
         {
             var showIndexUrl = string.Format(showIndexUrlPattern, pageNum);
 
-            return await RequestRemoteData(
+            var shows = await RequestRemoteData(
                 showIndexUrl,
                 (IEnumerable<RemoteShow> remoteShows) => remoteShows.Select(ExtractShowFromRemoteShow)
             );
+            return shows ?? Enumerable.Empty<Show>();
         }
 
         private async Task<TOut> RequestRemoteData<TOut, TRequestedData>(string url, Func<TRequestedData, TOut> dataTransformation) where TOut: class 
