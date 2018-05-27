@@ -34,11 +34,15 @@ namespace TvMazeScraper.Core.Scenarios
             while (!cancellationToken.IsCancellationRequested)
             {
                 OnNextPageGrabbing?.Invoke(this, pageToAsk);
-                var moreShowsExist = await grabPageOfShowsScenario.RunAsync(pageToAsk++, cancellationToken);
+                var moreShowsExist = await grabPageOfShowsScenario.RunAsync(pageToAsk, cancellationToken);
                 if (!moreShowsExist)
                 {
                     OnFinished?.Invoke(this, pageToAsk);
                     await Task.Delay(PauseWhenNoShowsLeftInMs, cancellationToken);
+                }
+                else
+                {
+                    pageToAsk++;
                 }
             }
         }
