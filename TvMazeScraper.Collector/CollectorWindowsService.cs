@@ -32,7 +32,7 @@ namespace TvMazeScraper.Collector
         public bool Stop(HostControl hostControl)
         {
             cancellationTokenSource.Cancel();
-            if (grabTask.IsCanceled)
+            if (!grabTask.IsCanceled)
             {
                 grabTask.Wait();
             }
